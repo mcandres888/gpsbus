@@ -13,6 +13,9 @@ class Buses extends CI_Model {
     var $plate_number;
     var $route;
     var $gps_id;
+    var $longitude = "121.009080";
+    var $latitude = "14.645636";
+    var $last_update ;
 
    
 	function __construct() {
@@ -31,6 +34,9 @@ class Buses extends CI_Model {
 			'plate_number' => $this->plate_number,
 			'route' => $this->route,
 			'gps_id' => $this->gps_id,
+			'longitude' => $this->longitude,
+			'latitude' => $this->latitude,
+			'last_update' => $this->last_update,
     );
 		return $data;
 	}
@@ -62,6 +68,9 @@ class Buses extends CI_Model {
 			$this->plate_number = $row->plate_number;
 			$this->route = $row->route;
 			$this->gps_id = $row->gps_id;
+			$this->longitude = $row->longitude;
+			$this->latitude = $row->latitude;
+			$this->last_update = $row->last_update;
 
 
 
@@ -77,6 +86,7 @@ class Buses extends CI_Model {
 		$this->route = $this->caller->input->post('route');
 		$this->gps_id = $this->caller->input->post('gps_id');
 
+                $this->last_update = $this->getDatetimeNow();
 
 		// then add the instance of that model
 		$id = $this->add();
@@ -92,6 +102,7 @@ class Buses extends CI_Model {
 		$this->route = $this->caller->input->post('route');
 		$this->gps_id = $this->caller->input->post('gps_id');
 
+                $this->last_update = $this->getDatetimeNow();
 
 
 
@@ -104,8 +115,16 @@ class Buses extends CI_Model {
 		$this->delete();
 	}
 
+        function updateBusCoordinates ( $gps_id, $long, $lat) {
+            $date_time = $this->getDatetimeNow();
+            $query = $this->caller->db->query("UPDATE $this->table_name SET longitude = '$long', latitude = '$lat', last_update= '$date_time' WHERE gps_id LIKE '$gps_id'");
+           return $this->caller->db->affected_rows();
+
+        }
+
+
 	function getAll () {
-    $query = $this->caller->db->query("SELECT * FROM $this->table_name");
+    $query = $this->caller->db->query("SELECT * FROM $this->table_name WHERE gps_id  != ''");
     $total = $this->caller->db->affected_rows();
 		$data = array();
    	foreach ($query->result() as $row) {
@@ -155,6 +174,15 @@ class Buses extends CI_Model {
 
 
    }
+
+   function getDatetimeNow() {
+    $tz_object = new DateTimeZone('Asia/Manila');
+    //date_default_timezone_set('Brazil/East');
+
+    $datetime = new DateTime();
+    $datetime->setTimezone($tz_object);
+    return $datetime->format('Y\-m\-d\ h:i:s');
+}
 
 
 }

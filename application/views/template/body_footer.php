@@ -77,23 +77,42 @@ $(document).ready(function() {
           zoom: 16,
           center: {lat: 14.531131, lng: 121.021210}
         });
+       loadPins();
+        setInterval(function(){loadPins(); }, 60000);
       }
 
-      function drop() {
-        clearMarkers();
-        for (var i = 0; i < neighborhoods.length; i++) {
-          addMarkerWithTimeout(neighborhoods[i], i * 200);
-        }
+
+
+
+      function loadPins() {
+         $.getJSON("/index.php/main/gps_getall", function(data, status){
+            data.forEach(function(bus) {
+               console.log(bus.bus_name);
+               addMarkerWithTimeout({lat: parseFloat(bus.latitude), lng: parseFloat(bus.longitude)}, bus.bus_name, 200);
+            });
+         });
       }
 
-      function addMarkerWithTimeout(position, timeout) {
+      function addMarkerWithTimeout(position, title,  timeout) {
         window.setTimeout(function() {
-          markers.push(new google.maps.Marker({
+          var marker = new google.maps.Marker({
             position: position,
             map: map,
+            title: title,
             animation: google.maps.Animation.DROP
-          }));
+          });
+
+         var contentString = '<div id="content">' + title + '</div>';
+
+         var infowindow = new google.maps.InfoWindow({ content: contentString });
+
+          marker.addListener('click', function() { infowindow.open(map, marker); });
+
+          markers.push(marker);
+          map.setCenter(position);
         }, timeout);
+
+
       }
 
       function clearMarkers() {
