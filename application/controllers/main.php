@@ -1174,6 +1174,12 @@ class Main extends CI_Controller {
 	}
 
 
+    public function gps($gpsid) {
+
+       echo json_encode("ok " . $gpsid) ;
+      return;
+
+    }
 
 
 
