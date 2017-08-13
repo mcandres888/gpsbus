@@ -78,7 +78,7 @@ $(document).ready(function() {
           center: {lat: 14.531131, lng: 121.021210}
         });
        loadPins();
-        setInterval(function(){loadPins(); }, 60000);
+        setInterval(function(){loadPins(); }, 6000);
       }
 
 
