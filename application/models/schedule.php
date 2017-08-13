@@ -85,9 +85,14 @@ class Schedule extends CI_Model {
 		
 	function update_thru_post () {
 		// get the information first and update the model
-		$this->id = $this->caller->input->get('id');
-		$this->bus_id = $this->caller->input->post('bus_id');
-		$this->bus_name = $this->caller->input->post('bus_name');
+		$this->id = $this->caller->input->post('id');
+		$bus = $this->caller->input->post('bus');
+
+                $split = explode("^", $bus);
+
+		$this->bus_id = $split[0];
+		$this->bus_name = $split[1];
+
 		$this->direction = $this->caller->input->post('direction');
 		$this->time = $this->caller->input->post('time');
 		$this->location = $this->caller->input->post('location');
@@ -109,6 +114,7 @@ class Schedule extends CI_Model {
     $total = $this->caller->db->affected_rows();
 		$data = array();
    	foreach ($query->result() as $row) {
+          $row->id = intval($row->id);
       $data[] = $row;
     }
     return $data;
@@ -133,7 +139,7 @@ class Schedule extends CI_Model {
        $tabledata['recordsTotal'] = $this->caller->db->affected_rows();
        $tabledata['draw'] = $draw + 1;
        $tabledata['data'] = array();
-       $base = base_url();
+       $base = base_url() . "index.php/main";
 
    	   foreach ($query->result() as $row) {
 
@@ -142,7 +148,7 @@ class Schedule extends CI_Model {
          $temp[] = $row->direction;
          $temp[] = $row->time;
          $temp[] = $row->location;
-         $actions = "<a href='$base/track/$row->bus_id'><button type='button' class='btn btn-success'> Track </button></a> <a href='$base/sched_edit/$row->id'><button type='button' class='btn btn-danger'> Edit </button></a>" ;
+         $actions = "<a href='$base/sched_edit/$row->id'><button type='button' class='btn btn-danger'> Edit </button></a>" ;
 
 
          $temp[] = $actions;

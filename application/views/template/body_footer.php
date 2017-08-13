@@ -85,7 +85,7 @@ $(document).ready(function() {
 
 
       function loadPins() {
-         $.getJSON("/index.php/main/gps_getall", function(data, status){
+         $.getJSON("<?=$gps_url?>", function(data, status){
             data.forEach(function(bus) {
                console.log(bus.bus_name);
                addMarkerWithTimeout({lat: parseFloat(bus.latitude), lng: parseFloat(bus.longitude)}, bus.bus_name, 200);

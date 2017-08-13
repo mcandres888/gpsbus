@@ -95,7 +95,7 @@ class Buses extends CI_Model {
 		
 	function update_thru_post () {
 		// get the information first and update the model
-		$this->id = $this->caller->input->get('id');
+		$this->id = $this->caller->input->post('id');
 		$this->company = $this->caller->input->post('company');
 		$this->bus_name = $this->caller->input->post('bus_name');
 		$this->plate_number = $this->caller->input->post('plate_number');
@@ -103,8 +103,6 @@ class Buses extends CI_Model {
 		$this->gps_id = $this->caller->input->post('gps_id');
 
                 $this->last_update = $this->getDatetimeNow();
-
-
 
 		$this->update();
 	}
@@ -128,6 +126,9 @@ class Buses extends CI_Model {
     $total = $this->caller->db->affected_rows();
 		$data = array();
    	foreach ($query->result() as $row) {
+          $row->id = intval($row->id);
+          $row->address = $row->bus_name;
+          $row->status = 'done';
       $data[] = $row;
     }
     return $data;
@@ -152,7 +153,7 @@ class Buses extends CI_Model {
        $tabledata['recordsTotal'] = $this->caller->db->affected_rows();
        $tabledata['draw'] = $draw + 1;
        $tabledata['data'] = array();
-       $base = base_url();
+       $base = base_url() . "index.php/main";
 
    	   foreach ($query->result() as $row) {
 
