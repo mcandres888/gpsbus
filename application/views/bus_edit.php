@@ -66,7 +66,7 @@ include "template/body_navbar_left.php";
 
                <div class='box-footer'>
                    <button type='submit' class='btn btn-primary'>Update Bus</button>
-                   <a href="<?=$base?>index.php/main/bus_delete/<?=$bus_id?>" ><button  class='btn btn-danger'>Delete Bus</button></a>
+                   <a href="<?=$base?>index.php/main/bus_delete/<?=$bus_id?>" class='btn btn-danger'>Delete Bus</a>
                </div>
                </div>
             </form>

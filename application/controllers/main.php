@@ -100,6 +100,8 @@ class Main extends CI_Controller {
           $this->load->model('buses');
           $bus = new buses();
           $bus->id = $bus_id;
+          $bus->get();
+          //echo json_encode($bus->get_data());
           $bus->delete();
           redirect("/main/buses");
 

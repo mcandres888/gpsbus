@@ -56,7 +56,7 @@ class Buses extends CI_Model {
 	}
     
 	function delete ( ) {
-		$query = $this->db->query("DELETE FROM $this->table_name WHERE id='$this->id'");
+		$query = $this->db->query("DELETE FROM $this->table_name WHERE id=$this->id");
 	}
 
 	function get ( ) {

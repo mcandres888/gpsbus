@@ -92,7 +92,7 @@ include "template/body_navbar_left.php";
 
                <div class='box-footer'>
                    <button type='submit' class='btn btn-primary'>Update Bus Schedule</button>
-                   <a href="<?=$base?>index.php/main/sched_delete/<?=$sched_id?>"<button class='btn btn-danger'>Delete Bus Schedule</button></a>
+                   <a href="<?=$base?>index.php/main/sched_delete/<?=$sched_id?>" class='btn btn-danger'>Delete Bus Schedule</a>
                </div>
                </div>
             </form>
